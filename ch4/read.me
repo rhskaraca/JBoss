@@ -1,0 +1,20 @@
+Workstation Uzerinde Domain modda calıstırmak icin:
+#copy base dirs to another locationm
+mkdir vm1
+mkdir vm2
+cp -r /jboss-eap-7.0/domain/configuration vm1
+cp -r /jboss-eap-7.0/domain/configuration vm1
+#change host name in the slave ## edit vm2/host-slave.xml add name=”vm2”
+#change listening port name for management interface ## edit vm2/host-slave.xml change (jboss.management.native.port) 9999 to 19999
+#run domain controller
+/opt/jboss-eap-7.0/bin/domain.sh -Djboss.domain.base.dir=/home/student/vm1 --host-config=host-master.xml
+#run the slave one
+/opt/jboss-eap-7.0/bin/domain.sh -Djboss.domain.base.dir=/home/student/vm2 --host-config=host-slave.xml -Djboss.domain.master.address=127.0.0.1
+
+##workstation ve servera birlikte calıstırabilmek icin
+#below is a master jboss controller start command
+sudo -u jboss $JBOSS_HOME/bin/domain.sh -Djboss.bind.address.management=172.25.250.9 --host-config=host-master.xml
+#below is a slave jboss controller start command. but it will throw a auth error as no auth config done yet!
+sudo -u jboss /opt/jboss-eap-7.4/bin/domain.sh -Djboss.bind.address.management=172.25.250.10 \
+-Djboss.bind.address=172.25.250.10 \
+-Djboss.domain.master.address=172.25.250.9 --host-config=host-slave.xml

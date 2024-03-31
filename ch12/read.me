@@ -1,0 +1,24 @@
+#first node in the cluster
+sudo -u jboss /opt/jboss-eap-7.4/bin/standalone.sh \
+-Djboss.node.name=jgroups-cluster1 \
+-Djboss.bind.address=172.25.250.9 \
+-Djboss.bind.address.private=172.25.250.9 \
+-c standalone-ha.xml
+
+#second node in the cluster. standalone dir is copied to /home/student/standalone
+sudo -u jboss /opt/jboss-eap-7.4/bin/standalone.sh \
+-Djboss.node.name=jgroups-cluster2 \
+-Djboss.bind.address=172.25.250.9 \
+-Djboss.bind.address.private=172.25.250.9 \
+-Djboss.socket.binding.port-offset=100 \
+-Djboss.server.base.dir=/home/student/standalone \
+-c standalone-ha.xml
+
+
+-Djboss.server.base.dir=/opt/jboss-eap-7.4/standalone/ \
+
+sudo -u jboss /opt/jboss-eap-7.4/bin/standalone.sh \
+-Djboss.node.name=jgroups-cluster2 \
+-Djboss.bind.address=172.25.250.10 \
+-Djboss.bind.address.private=172.25.250.10 \
+-c standalone-full-ha.xml
